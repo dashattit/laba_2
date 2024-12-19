@@ -11,6 +11,6 @@ router.register(r'authors', AuthorViewSet)
 #включаем маршруты в urlpatterns
 urlpatterns = [
     path('', include(router.urls)),
-    path('authors/', AuthorListCreateView.as_view(), name='author-list-create'),
     path('authors/<int:pk>/', AuthorDetailView.as_view(), name='author-detail'),
+    path('authors/', AuthorListCreateView.as_view(), name='author-list-create'),
 ]
