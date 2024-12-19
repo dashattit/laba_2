@@ -2,6 +2,7 @@ from rest_framework import viewsets, generics
 from .models import Book, Author
 from .serializers import BookSerializer, AuthorSerializer
 
+
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer

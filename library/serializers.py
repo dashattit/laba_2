@@ -1,14 +1,28 @@
+from cProfile import label
+
 from rest_framework import serializers
 from .models import Book, Author
 
 #класс наследуется от serializers.ModelSerializer, т.е мы автоматически создаем сериализатор на основе модели book
 class BookSerializer(serializers.ModelSerializer):
-    author = serializers.StringRelatedField()  #используем строковое представление автора
+    author_id = serializers.PrimaryKeyRelatedField(
+        label='Автор',
+        queryset=Author.objects.all(),
+        source='author',
+        write_only=True
+    )
+    author = serializers.StringRelatedField(read_only=True)  #используем строковое представление автора
+    url=serializers.HyperlinkedIdentityField(
+        view_name='book-detail',
+        lookup_field='pk',
+    )
 
     class Meta:
         model = Book
         #список полей, которые будут включены  сериализацию
-        fields = ['title', 'year_of_publication', 'publisher', 'book_type', 'author']
+        fields = ['id', 'title', 'author', 'author_id', 'year_of_publication', 'genre',
+                  'category', 'publisher', 'cover_image', 'text_file', 'url'
+        ]
 
     #валидация входных данных перед их сохранением
     def validate(self, attrs):
